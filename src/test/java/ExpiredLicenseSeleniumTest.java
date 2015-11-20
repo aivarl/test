@@ -16,8 +16,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
 /**
  * Use Case 2: The system reminds the licensing manager in time of expiring licenses.
@@ -29,15 +27,7 @@ public class ExpiredLicenseSeleniumTest {
 
     @Before
     public void setUp() throws Exception {
-    	// We could use any driver for our tests...
-    	DesiredCapabilities capabilities = new DesiredCapabilities();
-
-    	// ... but only if it supports javascript
-    	capabilities.setJavascriptEnabled(true);
-
-    	// Get a handle to the driver. This will throw an exception
-    	// if a matching driver cannot be located
-    	WebDriver driver = new RemoteWebDriver(capabilities);
+        driver = new FirefoxDriver();
         baseUrl = "ondemand.saucelabs.com:80/";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
