@@ -1,0 +1,50 @@
+[
+  {
+    "type": "dropdown",
+    "name": "Licenses",
+    "dropdown": [
+      {
+        "type": "link",
+        "url": "licenses",
+        "name": "View licenses"
+      },
+      {
+        "type": "link",
+        "url": "events",
+        "name": "View events"
+      }
+    ]
+  },
+  {
+    "type": "dropdown",
+    "name": "Products",
+    "dropdown": [
+      {
+        "type": "link",
+        "url": "products",
+        "name": "View products"
+      },
+      {
+        "type": "link",
+        "url": "product/addSingleProduct",
+        "name": "Add single product"
+      }
+    ]
+  },
+  {
+    "type": "dropdown",
+    "name": "Customers",
+    "dropdown": [
+      {
+        "type": "link",
+        "url": "customers",
+        "name": "View customers"
+      },
+      {
+        "type": "link",
+        "url": "customer/addSingleCustomer",
+        "name": "Add single customer"
+      }
+    ]
+  }
+]

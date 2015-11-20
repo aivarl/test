@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html data-ng-app="LM">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
+    <script src="assets/lib/jquery/jquery-2.1.4.min.js"></script>
+    <script src="assets/lib/bootstrap/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js"></script>
+    <script src="assets/lib/ui-select/select.js"></script>
+    <link rel="stylesheet" href="assets/lib/ui-select/select.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="assets/lib/bootstrap/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" media="all" href="assets/main.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/lib/angular-tooltip/angular-tooltips.css" rel="stylesheet" type="text/css" />
+    <title>License management</title>
+
+    <script src="app.module.js"></script>
+    <script src="app.routes.js"></script>
+    <script src="assets/lib/angular-tooltip/angular-tooltips.js"></script>
+
+    <!-- Configuration -->
+    <!-- <script src="app/shared/config.js"></script> -->
+
+    <!-- Controllers -->
+    <script src="components/home/HomeCtrl.js"></script>
+    <script src="shared/header/headerController.js"></script>
+    <script src="components/license/licensesView.js"></script>
+    <script src="components/license/addLicense.js"></script>
+    <script src="components/license/profileLicense.js"></script>
+    <script src="components/product/addProduct.js"></script>
+    <script src="components/product/productsView.js"></script>
+    <script src="components/product/addSingleProduct.js"></script>
+    <script src="components/customer/customerView.js"></script>
+    <script src="components/customer/addCustomer.js"></script>
+    <script src="components/customer/profileCustomer.js"></script>
+    <script src="components/customer/addSingleCustomer.js"></script>
+    <script src="components/authorisedUser/add/addAuthorisedUser.js"></script>
+    <script src="expiringLicense/expiringLicenses.js"></script>
+    <script src="components/template/AddMailTemplate.js"></script>
+    <script src="components/license/eventsView.js"></script>
+    <script src="components/license/history.js"></script>
+
+    <!-- Services -->
+    <script src="services/LicensingService.js"></script>
+    <!-- Filters -->
+
+    <!-- Directives -->
+    <script src="directives/licenseTable.js"></script>
+    <script src="directives/licenseOwnerTable.js"></script>
+    <script src="directives/productTable.js"></script>
+    <script src="directives/eventTable.js"></script>
+    <script src="directives/SearchOrganization.js"></script>
+
+</head>
+<body>
+<!-- Header -->
+<div data-ng-include="'shared/header/header.html'"></div>
+<!-- *View.html -->
+<div data-ng-view></div>
+</body>
+</html>
