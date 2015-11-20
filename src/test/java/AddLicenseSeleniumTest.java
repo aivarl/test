@@ -25,6 +25,7 @@ public class AddLicenseSeleniumTest {
 
     @Before
     public void setUp() throws Exception {
+    	
     	// We could use any driver for our tests...
     	DesiredCapabilities capabilities = new DesiredCapabilities();
 
@@ -36,7 +37,7 @@ public class AddLicenseSeleniumTest {
     	WebDriver driver = new RemoteWebDriver(capabilities);
     	
 //        driver = new FirefoxDriver();
-        baseUrl = "http://localhost:4445/";
+        baseUrl = "ondemand.saucelabs.com:80/";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
