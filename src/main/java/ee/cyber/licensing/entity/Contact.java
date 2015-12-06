@@ -1,23 +1,36 @@
 package ee.cyber.licensing.entity;
 
-public class Contact {
-    Integer id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-    Integer customerId;
-    String contactName;
+@JsonIgnoreProperties({"editing", "new", "copy"})
+public class Contact {
+
+    Integer id;
+    String firstName;
+    String lastName;
     String email;
     String skype;
     String phone;
 
+    public Contact() {
+    }
 
-    public Contact(Integer customerId, String contactName, String email, String skype, String phone) {
-        this.customerId = customerId;
-        this.contactName = contactName;
+    public Contact(Integer id, String firstName, String lastName, String email, String skype, String phone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.skype = skype;
         this.phone = phone;
     }
 
+    public Contact(String firstName, String lastName, String email, String skype, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.skype = skype;
+        this.phone = phone;
+    }
 
     public Integer getId() {
         return id;
@@ -27,21 +40,45 @@ public class Contact {
         this.id = id;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getContactName() {
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /*public String getContactName() {
         return contactName;
     }
 
     public void setContactName(String contactName) {
         this.contactName = contactName;
+    }*/
+
+    /*    public String getContactFirstName() {
+        return contactFirstName;
     }
+
+    public String getContactLastName() {
+        return contactLastName;
+    }
+
+    public void setContactFirstName(String contactFirstName) {
+        this.contactFirstName = contactFirstName;
+    }
+
+    public void setContactLastName(String contactLastName) {
+        this.contactLastName = contactLastName;
+    }*/
 
     public String getEmail() {
         return email;

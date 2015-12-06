@@ -13,6 +13,7 @@ import org.h2.tools.RunScript;
 import javax.inject.Singleton;
 import javax.sql.DataSource;
 import javax.ws.rs.ApplicationPath;
+import javax.mail.Session;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -57,8 +58,10 @@ public class RestApp extends ResourceConfig {
                 bind(ProductRepository.class).to(ProductRepository.class).in(Singleton.class);
                 bind(CustomerRepository.class).to(CustomerRepository.class).in(Singleton.class);
                 bind(AuthorisedUserRepository.class).to(AuthorisedUserRepository.class).in(Singleton.class);
-                bind(ContactRepository.class).to(ContactRepository.class).in(Singleton.class);
                 bind(EventRepository.class).to(EventRepository.class).in(Singleton.class);
+                bind(ReleaseRepository.class).to(ReleaseRepository.class).in(Singleton.class);
+                bind(FileRepository.class).to(FileRepository.class).in(Singleton.class);
+                bind(ContactRepository.class).to(ContactRepository.class).in(Singleton.class);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -86,6 +89,7 @@ public class RestApp extends ResourceConfig {
         }
 
         protected void executeScriptFromClasspath(Connection conn, String fileName) throws SQLException, IOException {
+            System.out.println(fileName);
             try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(fileName)) {
                 RunScript.execute(conn, new InputStreamReader(resourceAsStream));
             }

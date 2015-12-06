@@ -1,9 +1,11 @@
 package ee.cyber.licensing.dao;
 
+import ee.cyber.licensing.entity.AuthorisedUser;
 import ee.cyber.licensing.entity.Product;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +22,9 @@ public class ProductRepository {
         this.ds = ds;
     }
 
+    @Inject
+    private ReleaseRepository releaseRepository;
+
     public List<Product> findAll() throws SQLException {
         try (Connection conn = ds.getConnection()) {
             try (PreparedStatement stmt = conn.prepareStatement("SELECT * from Product")) {
@@ -34,11 +39,29 @@ public class ProductRepository {
         }
     }
 
+    public List<Product> findByKeyword(String kword) throws SQLException {
+        System.out.println(kword);
+        try (Connection conn = ds.getConnection()) {
+            try (PreparedStatement statement = conn.prepareStatement(
+                    "SELECT * FROM Product WHERE LOWER(name) LIKE LOWER(CONCAT('%',?,'%'))")) {
+                statement.setString(1, kword);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    List<Product> products = new ArrayList<>();
+                    while (resultSet.next()) {
+                        Product product = getProduct(resultSet);
+                        products.add(product);
+                    }
+                    return products;
+                }
+            }
+        }
+    }
+
     public Product save(Product product) throws SQLException {
         try (Connection conn = ds.getConnection()) {
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO Product (name, release) VALUES (?, ?)");
+
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO Product (name) VALUES (?)");
             statement.setString(1, product.getName());
-            statement.setString(2, product.getRelease());
             statement.execute();
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -65,9 +88,37 @@ public class ProductRepository {
     }
 
     private Product getProduct(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
         return new Product(
-                rs.getInt("id"),
+                id,
                 rs.getString("name"),
-                rs.getString("release"));
+                releaseRepository.findByProductId(id));
+    }
+
+
+    public Product editProduct(Product product) throws SQLException {
+        try (Connection conn = ds.getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("UPDATE Product SET name=? WHERE id=?");
+            statement.setString(1, product.getName());
+            statement.setInt(2, product.getId());
+            statement.executeUpdate();
+        }
+        return product;
+    }
+
+    public boolean deleteProduct(Product product) {
+        try (Connection conn = ds.getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("DELETE from Product where id=?");
+            statement.setInt(1, product.getId());
+            statement.execute();
+
+            return true;
+
+        } catch (SQLException e) {
+
+            return false;
+
+        }
+
     }
 }

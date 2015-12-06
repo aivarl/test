@@ -1,20 +1,33 @@
 angular
     .module('LM')
-    .controller('AddLicenseCtrl', function ($scope, $http, $window, LicensingService) {
+    .controller('AddLicenseCtrl', function ($scope, $http, $window, LicensingService, $rootScope) {
         /* $scope.allStates = {1:'CANCELLED',2: 'NEGOTIATED', 3:'WAITING_FOR_SIGNATURE', 4:'ACTIVE', 5:'EXPIRATION_NEARING',
          6:'TERMINATED'};*/
         $scope.predecessor = {};
         $scope.applicant = {};
+        $scope.user = $scope.user || {};
 
-        $http.get('rest/licenses', $scope.license).success(function (result) {
+        $http.get('rest/licenses').success(function (result) {
             $scope.licenses = result;
         });
+
+        $http.get('rest/licenses/type').
+            then(function (response) {
+                $scope.types = response.data;
+            }, function (response) {
+                console.error('Something went wrong with the license types get method.');
+            });
+
 
         $scope.allStates = ['REJECTED', 'NEGOTIATED', 'WAITING_FOR_SIGNATURE'];
         $scope.state = {};
 
         //Only for showing
         $scope.prefillProduct = LicensingService.getproduct() || LicensingService.getproductNew();
+        console.log("new customer:");
+        console.log(LicensingService.getApplicant());
+        console.log("existing customer:");
+        console.log(LicensingService.getCustomer());
         $scope.prefillCustomer = LicensingService.getApplicant() || LicensingService.getCustomer();
         $scope.prefillContractNumber = LicensingService.getContractNumber();
 
@@ -25,56 +38,64 @@ angular
             $http.post('rest/licenses', $scope.user).
                 then(function (response) {
                     // If something breaks and events are not created, comment the line below.
-                    createEvent(response.data.id);
+                    console.log(response.data);
+                    createEvent(response.data, 0);
                     $window.location.href = '#/';
                 }, function (response) {
-                    console.error('There was something wrong with the add license request.');
-                });
-        }
-
-        function createProduct(product) {
-            console.log("New Product:");
-            console.log(product);
-            $http.post('rest/products', product).
-                then(function (response) {
-                    $scope.user.product = response.data;
-                    console.log("New product with id:");
-                    console.log($scope.user.product);
-                    createLicense();
-
-                }, function (response) {
-                    console.error('There was something wrong with the add product request.');
+                    $scope.errorMessage = 'Something went wrong. Maybe license with this id already exists?';
+                    console.error(response);
                 });
         }
 
         function createCustomer(applicant) {
-            console.log("New applicant:");
-            console.log(applicant);
             $http.post('rest/customers', applicant).
                 then(function (response) {
+                    // new customer/applicant has id now
                     $scope.user.customer = response.data;
-                    console.log("New customer(applicant) with id:");
-                    console.log($scope.user.customer);
-
-                    var newProduct = LicensingService.getproductNew();
-                    if (newProduct != undefined) {
-                        createProduct(newProduct);
-                    } else {
-                        //var existingProduct = LicensingService.getproduct() != 'undefined';
-                    }
+                    $scope.user.product = LicensingService.getproduct();
+                    $scope.user.release = LicensingService.getRelease();
+                    createEvent(response.data, 1);
+                    console.log("Customer event created!!!");
+                    createLicense();
                 }, function (response) {
                     console.error('There was something wrong with the add customer request.');
                 });
         }
 
-        function createEvent(id) {
+        function createEvent(obj, event_nr) {
+            // Event numbers
+            // 0 - add new license
+            // 1 - add new customer
+
+            $scope.events = [
+              {
+                name: 'Created License',
+                description: $scope.username+' added license '+obj.contractNumber+', state is: '+obj.state,
+                type: 'Add'
+              },
+              {
+                name: 'Created Customer',
+                description: $scope.username+' added customer '+obj.organizationName,
+                type: 'Add'
+              }
+              ];
+
+              /*
             $scope.event = {
                 name: 'User name',
-                description: '*user name* added license *license nr*',
+                description: '*user name* added license '+license.contractNumber+', state is: '+license.state,
                 type: 'Add'
             };
+            */
 
-            $http.post('rest/events/' + id, $scope.event).
+            if(event_nr == 0) {
+              id = obj.id;
+            }
+            else {
+              id = 0;
+            }
+
+            $http.post('rest/events/' + id, $scope.events[event_nr]).
                 then(function (response) {
                     console.log("Event created");
                     console.log(response.data);
@@ -84,26 +105,20 @@ angular
         }
 
         $scope.saveData = function () {
-            $scope.user = $scope.user || {};
-
-            $scope.user.contractNumber = $scope.prefillContractNumber;
+            $scope.user.contractNumber = $scope.contractNumber;
             $scope.user.state = $scope.state;
-            console.log("Predecessor");
-            console.log($scope.predecessor.contractNumber);
             $scope.user.predecessorLicenseId = $scope.predecessor.contractNumber;
+            //$scope.user.type = $scope.type;
 
             var applicant = LicensingService.getApplicant();
             if (applicant != undefined) {
                 createCustomer(applicant);
             } else {
-                console.log("else haru");
-                console.log($scope.user.customer);
-                console.log($scope.user.product);
-                console.log($scope.user)
                 $scope.user.customer = LicensingService.getCustomer();
                 $scope.user.product = LicensingService.getproduct();
+                $scope.user.release = LicensingService.getRelease();
                 createLicense();
-                //LicensingService.getCustomer() != 'undefined')
             }
+
         }
     });

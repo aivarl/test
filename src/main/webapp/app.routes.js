@@ -18,8 +18,16 @@ angular
                 templateUrl: 'components/license/history.html',
                 controller: 'ViewHistoryCtrl'
             })
+            .when('/license/:id/notification', {
+                templateUrl: 'components/license/deliveryNotification.html',
+                controller: 'DeliveryNotification'
+            })
             .when('/authorisedUser/bylicense/:id', {
                 templateUrl: 'components/license/usersView.html',
+                controller: 'ProfileLicenseCtrl'
+            })
+            .when('/contactPersons/bylicense/:id', {
+                templateUrl: 'components/license/contactPersonView.html',
                 controller: 'ProfileLicenseCtrl'
             })
             .when('/products', {
@@ -31,12 +39,11 @@ angular
                 controller: 'AddSingleProductCtrl'
             })
             .when('/product/add', {
-                templateUrl: 'components/product/addProduct.html',
+                templateUrl: 'components/product/chooseProduct.html',
                 controller: 'AddProductCtrl'
             })
-
             .when('/customers', {
-                templateUrl: 'components/customer/customerView.html',
+                templateUrl: 'components/customer/customersView.html',
                 controller: 'ViewCustomerCtrl'
             })
             .when('/customer/add', {
@@ -51,6 +58,10 @@ angular
                 templateUrl: 'components/customer/profileCustomer.html',
                 controller: 'ProfileCustomerCtrl'
             })
+            .when('/customer/:id/history', {
+                templateUrl: 'components/license/history.html',
+                controller: 'ViewHistoryCtrl'
+            })
             .when('/', {
                 templateUrl: 'components/home/home.html',
                 controller: 'HomeCtrl'
@@ -63,10 +74,32 @@ angular
                 templateUrl: 'components/template/addMailTemplate.html',
                 controller: 'TemplateCtrl'
             })
-            .when('/events',{
+            .when('/eventsLicense',{
                 templateUrl: 'components/license/eventsView.html',
                 controller: 'ViewEventsCtrl'
+            })
+            .when('/eventsCustomer',{
+                templateUrl: 'components/license/eventsView.html',
+                controller: 'ViewEventsCtrl'
+            })
+            .when('/deliveryLicenses',{
+                templateUrl: 'components/license/deliveryLicenses.html',
+                controller: 'DeliveryLicensesCtrl'
+            })
+            .when('/search/:keyword/',{
+                templateUrl: 'components/home/search.html',
+                controller: 'SearchCtrl'
+            })
+            .when('/licenseType',{
+                templateUrl: 'components/license/licenseType.html',
+                controller: 'LicenseTypeCtrl'
             });
+
+            //.when('/search/:keyword/'... kohta
+            // Millegipärast, kui lisada lõppu kaldkriips, siis
+            // location.path(...) laeb lehe uuesti(kontrolleri). Ilma kriipsuta
+            // ta seda ei tee. Bug?
+
 
         //$routeProvider.otherwise({redirectTo: '/'}); Is not needed at the moment.
     });

@@ -20,7 +20,7 @@ import org.openqa.selenium.support.ui.Select;
 /**
  * Use Case 2: The system reminds the licensing manager in time of expiring licenses.
  */
-public class ExpiredLicenseSeleniumTest {
+public class ExpiredLicenseSelenium {
     private WebDriver driver;
     private String baseUrl;
     private StringBuffer verificationErrors = new StringBuffer();
@@ -28,7 +28,7 @@ public class ExpiredLicenseSeleniumTest {
     @Before
     public void setUp() throws Exception {
         driver = new FirefoxDriver();
-        baseUrl = "localhost:4445";
+        baseUrl = "http://localhost:8080/";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
