@@ -67,6 +67,13 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
+            <scope>test</scope>
+            <version>2.48.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <scope>test</scope>
             <version>2.48.2</version>
         </dependency>
         <dependency>
@@ -113,7 +120,35 @@
                     <jettyXml>
                       ${project.basedir}/src/main/resources/jetty.xml,${project.basedir}/src/main/resources/jetty-http.xml,${project.basedir}/src/main/resources/jetty-ssl.xml,${project.basedir}/src/main/resources/jetty-https.xml
                     </jettyXml>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <contextPath>/</contextPath>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <stopKey>STOP</stopKey>
+                    <stopPort>8005</stopPort>
+                    <port>8080</port>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>start-jetty</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <!-- stop any previous instance to free up the port -->
+                            <goal>stop</goal>
+                            <goal>run-exploded</goal>
+                        </goals>
+                        <configuration>
+                            <scanIntervalSeconds>0</scanIntervalSeconds>
+                            <daemon>true</daemon>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-jetty</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

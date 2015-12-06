@@ -47,7 +47,7 @@ public class AddLicenseSeleniumTest {
 //        if(!baseUrl.equals("http://localhost:8080/")){
             java.util.Date date = new java.util.Date();
             String ts = new Timestamp(date.getTime()).toString();
-            driver.get("http://localhost:4445/" + "#/");
+            driver.get("http://localhost:8080/" + "#/");
             driver.findElement(By.linkText("Start licensing process")).click();
             driver.findElement(By.xpath("(//input[@type='text'])[2]")).clear();
             driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys("e");
