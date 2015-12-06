@@ -4,6 +4,10 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.ws.rs.core.Application;
+
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,7 +24,7 @@ import com.thoughtworks.selenium.DefaultSelenium;
 /**
  * Use Case 4: Licensing manager can add data about applicant to the system.
  */
-public class AddLicenseSeleniumTest {
+public class AddLicenseSeleniumTest extends JerseyTest{
     private WebDriver driver;
     private String baseUrl;
     private StringBuffer verificationErrors = new StringBuffer();
@@ -30,6 +34,8 @@ public class AddLicenseSeleniumTest {
 
     @Before
     public void setUp() throws Exception {
+
+
 //    	if(!baseUrl.equals("http://localhost:8080/")){
     		
     		   DesiredCapabilities caps = DesiredCapabilities.chrome();
@@ -47,7 +53,7 @@ public class AddLicenseSeleniumTest {
 //        if(!baseUrl.equals("http://localhost:8080/")){
             java.util.Date date = new java.util.Date();
             String ts = new Timestamp(date.getTime()).toString();
-            driver.get("http://localhost:8080/" + "#/");
+            driver.get("http://localhost:9998/" + "#/");
             driver.findElement(By.linkText("Start licensing process")).click();
             driver.findElement(By.xpath("(//input[@type='text'])[2]")).clear();
             driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys("e");
