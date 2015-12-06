@@ -12,7 +12,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
+import java.net.URL;
+import com.thoughtworks.selenium.DefaultSelenium;
 /**
  * Use Case 4: Licensing manager can add data about applicant to the system.
  */
@@ -20,22 +24,30 @@ public class AddLicenseSeleniumTest {
     private WebDriver driver;
     private String baseUrl;
     private StringBuffer verificationErrors = new StringBuffer();
+    public static final String USERNAME = "aivarl";
+    public static final String ACCESS_KEY = "03e23a94-5f50-49d7-a305-94e5bb49fc8e";
+    public static final String URL = "http://" + USERNAME + ":" + ACCESS_KEY + "@ondemand.saucelabs.com:80/wd/hub";
 
     @Before
     public void setUp() throws Exception {
-    	if(!baseUrl.equals("http://localhost:8080/")){
-    		driver = new FirefoxDriver();
-    		baseUrl = System.getProperty("hostName");
-    		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-    	}
+//    	if(!baseUrl.equals("http://localhost:8080/")){
+    		
+    		   DesiredCapabilities caps = DesiredCapabilities.chrome();
+    		   caps.setCapability("platform", "Linux");
+    		   caps.setCapability("version", "42.0");
+//    		    caps.setCapability("platform", "Windows XP");
+//    		    caps.setCapability("version", "43.0");
+    		 
+    		    driver = new RemoteWebDriver(new URL(URL), caps);
+//    	}
     }
 
     @Test
     public void testAddLicenseWebDriver() throws Exception {
-        if(!baseUrl.equals("http://localhost:8080/")){
+//        if(!baseUrl.equals("http://localhost:8080/")){
             java.util.Date date = new java.util.Date();
             String ts = new Timestamp(date.getTime()).toString();
-            driver.get(baseUrl + "#/");
+            driver.get("http://localhost:9998/" + "#/");
             driver.findElement(By.linkText("Start licensing process")).click();
             driver.findElement(By.xpath("(//input[@type='text'])[2]")).clear();
             driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys("e");
@@ -55,7 +67,7 @@ public class AddLicenseSeleniumTest {
             List<WebElement> list = driver.findElements(By.xpath("//*[contains(text(),'" + ts + "')]"));
 //        Assert.assertTrue("License not found!", list.size() > 0);
             Assert.assertTrue(true);
-        }
+//        }
     }
 
     @After
